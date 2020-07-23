@@ -36,9 +36,9 @@ function getAuthenticationURL() {
 }
 
 async function refreshTokens() {
-  const refreshToken = await keytar.getPassword(keytarService, keytarAccount);
+  const token = await keytar.getPassword(keytarService, keytarAccount);
 
-  if (refreshToken) {
+  if (token) {
     const refreshOptions = {
       method: "POST",
       url: `https://${authDomain}/oauth/token`,
@@ -46,13 +46,16 @@ async function refreshTokens() {
       data: {
         grant_type: "refresh_token",
         client_id: clientId,
-        refresh_token: refreshToken,
+        client_secret: clientSecret,
+        refresh_token: token,
       },
     };
 
     try {
       const response = await axios(refreshOptions);
       accessToken = response.data.access_token;
+      refreshToken = response.data.refresh_token;
+      await keytar.setPassword(keytarService, keytarAccount, refreshToken);
     } catch (error) {
       await logout();
 

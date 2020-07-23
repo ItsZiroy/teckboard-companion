@@ -1,7 +1,7 @@
 const { app, BrowserWindow } = require("electron");
-const {createAuthWindow} = require('./main/auth-process');
-const createAppWindow = require('./main/app-process');
-
+const { createAuthWindow } = require("./main/auth-process");
+const createAppWindow = require("./main/app-process");
+const authService = require("./services/auth-service");
 // Behalten Sie eine globale Referenz auf das Fensterobjekt.
 // Wenn Sie dies nicht tun, wird das Fenster automatisch geschlossen,
 // sobald das Objekt dem JavaScript-Garbagekollektor übergeben wird.
@@ -14,6 +14,7 @@ async function showWindow() {
     win = 1;
     return createAppWindow();
   } catch (err) {
+    console.log(err);
     win = 1;
     createAuthWindow();
   }
