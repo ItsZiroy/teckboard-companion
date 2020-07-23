@@ -1,44 +1,28 @@
 const { app, BrowserWindow } = require("electron");
+const {createAuthWindow} = require('./main/auth-process');
+const createAppWindow = require('./main/app-process');
 
 // Behalten Sie eine globale Referenz auf das Fensterobjekt.
 // Wenn Sie dies nicht tun, wird das Fenster automatisch geschlossen,
 // sobald das Objekt dem JavaScript-Garbagekollektor übergeben wird.
+let win = null;
 
-let win;
-
-function createWindow() {
+async function showWindow() {
   require("electron-reload")(__dirname);
-  // Erstellen des Browser-Fensters.
-  win = new BrowserWindow({
-    width: 800,
-    height: 600,
-    webPreferences: {
-      nodeIntegration: true,
-    },
-    icon: __dirname + "public/images/teckboard-logo-orange.png",
-    // hasShadow: false,
-    backgroundColor: "#fff",
-  });
-
-  // und lade die index.html der App.
-  win.loadFile("index.html");
-
-  // Öffnen der DevTools.
-  // win.webContents.openDevTools();
-
-  // Ausgegeben, wenn das Fenster geschlossen wird.
-  win.on("closed", () => {
-    // Dereferenzieren des Fensterobjekts, normalerweise würden Sie Fenster
-    // in einem Array speichern, falls Ihre App mehrere Fenster unterstützt.
-    // Das ist der Zeitpunkt, an dem Sie das zugehörige Element löschen sollten.
-    win = null;
-  });
+  try {
+    await authService.refreshTokens();
+    win = 1;
+    return createAppWindow();
+  } catch (err) {
+    win = 1;
+    createAuthWindow();
+  }
 }
 
 // Diese Methode wird aufgerufen, wenn Electron mit der
 // Initialisierung fertig ist und Browserfenster erschaffen kann.
 // Einige APIs können nur nach dem Auftreten dieses Events genutzt werden.
-app.on("ready", createWindow);
+app.on("ready", showWindow);
 
 // Verlassen, wenn alle Fenster geschlossen sind.
 app.on("window-all-closed", () => {
@@ -53,7 +37,7 @@ app.on("activate", () => {
   // Unter macOS ist es üblich ein neues Fenster der App zu erstellen, wenn
   // das Dock Icon angeklickt wird und keine anderen Fenster offen sind.
   if (win === null) {
-    createWindow();
+    showWindow();
   }
 });
 

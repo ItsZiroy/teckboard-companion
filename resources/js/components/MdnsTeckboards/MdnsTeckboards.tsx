@@ -8,6 +8,7 @@ import {
   Fab,
   TextField,
   Typography,
+  Link,
 } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Axios from "Axios";
@@ -49,6 +50,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function MdnsTeckboards() {
   const classes = useStyles();
   const [screens, setScreens] = React.useState([]);
+  const [queried, setQueried] = React.useState(false);
   const [modal, setModal] = React.useState({
     open: false,
     ip: null,
@@ -70,14 +72,23 @@ export default function MdnsTeckboards() {
   };
   const query = () => {
     setScreens([]);
-    mdns.query({
-      questions: [
-        {
-          name: "teckboard.local",
-          type: "A",
-        },
-      ],
-    });
+    setQueried(false);
+    let counter = 0;
+    let query = setInterval(() => {
+      mdns.query({
+        questions: [
+          {
+            name: "teckboard.local",
+            type: "A",
+          },
+        ],
+      });
+      if (counter == 3) {
+        clearInterval(query);
+        setQueried(true);
+      }
+      counter++;
+    }, 2000);
   };
   const handleKeyDown = (e: KeyboardEvent) => {
     if ((e.key == "r" || e.key == "R") && e.ctrlKey) query();
@@ -89,7 +100,7 @@ export default function MdnsTeckboards() {
     document.addEventListener("keypress", handleKeyDown);
 
     mdns.on("response", (response: any) => {
-      let teckboards = [...screens];
+      let teckscreens = [...screens];
       response.answers.forEach((answer: any, index: number) => {
         if (
           answer.name == "teckboard.local" &&
@@ -97,14 +108,14 @@ export default function MdnsTeckboards() {
             answer.data
           )
         ) {
-          teckboards.push(answer.data);
+          teckscreens.push(answer.data);
         }
       });
 
-      teckboards = _.union(teckboards);
+      teckscreens = _.union(teckscreens);
 
-      if (teckboards.length && !_.isEqual(teckboards, screens))
-        setScreens(teckboards);
+      if (teckscreens.length && !_.isEqual(teckscreens, screens))
+        setScreens(teckscreens);
     });
     query();
     return () => {
@@ -118,12 +129,25 @@ export default function MdnsTeckboards() {
           return <TbCard key={index} openModal={handleOpenModal} ip={value} />;
         })}
         {!screens.length ? (
-          <div className={classes.loading}>
-            <CircularProgress color="primary"></CircularProgress>
+          !queried ? (
+            <div className={classes.loading}>
+              <CircularProgress color="primary"></CircularProgress>
+              <Typography className={classes.loadingText} color="primary">
+                Loading...
+              </Typography>
+            </div>
+          ) : (
             <Typography className={classes.loadingText} color="primary">
-              Loading...
+              No TECKscreens found.{" "}
+              <Link
+                color="secondary"
+                onClick={query}
+                style={{ cursor: "pointer" }}
+              >
+                Try again.
+              </Link>
             </Typography>
-          </div>
+          )
         ) : (
           undefined
         )}

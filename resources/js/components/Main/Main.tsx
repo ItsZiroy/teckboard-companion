@@ -4,11 +4,12 @@ import Drawer from "@material-ui/core/Drawer";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import HomeIcon from "@material-ui/icons/Home";
+import ImportantDevicesRoundedIcon from "@material-ui/icons/ImportantDevicesRounded";
 import * as React from "react";
+import { useAuth } from "../Auth";
+import Avatar from "../Avatar";
 import MdnsTeckboards from "../MdnsTeckboards";
 const drawerWidth = 57;
-
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -58,11 +59,17 @@ const useStyles = makeStyles((theme: Theme) =>
         marginRight: "auto",
       },
     },
+    toolbarRight: {
+      marginLeft: "auto",
+      display: "flex",
+      alignItems: "center",
+    },
   })
 );
 interface MainProps {}
 export default function Main(props: MainProps) {
   const classes = useStyles();
+  const user = useAuth();
   return (
     <div className={classes.root}>
       <AppBar position="fixed" className={classes.appBar}>
@@ -70,6 +77,9 @@ export default function Main(props: MainProps) {
           <Typography variant="h6" noWrap>
             <b>TECKboard</b> Companion
           </Typography>
+          <div className={classes.toolbarRight}>
+            <Avatar height={40} user={user}></Avatar>
+          </div>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -88,12 +98,16 @@ export default function Main(props: MainProps) {
           value={"Home"}
           orientation="vertical"
         >
-          <Tab value="Home" className={classes.tab} icon={<HomeIcon />}></Tab>
+          <Tab
+            value="Home"
+            className={classes.tab}
+            icon={<ImportantDevicesRoundedIcon />}
+          ></Tab>
         </Tabs>
       </Drawer>
       <div className={classes.content}>
         <Typography variant="h2" color="primary">
-          TECKboards available:
+          TECKscreens nearby:
         </Typography>
         <MdnsTeckboards />
       </div>
