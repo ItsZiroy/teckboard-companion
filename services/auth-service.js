@@ -105,7 +105,6 @@ async function loadTokens(callbackURL) {
 async function logout() {
   await keytar.deletePassword(keytarService, keytarAccount);
   accessToken = null;
-  profile = null;
   refreshToken = null;
 }
 

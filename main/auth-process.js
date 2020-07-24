@@ -1,6 +1,6 @@
-const {BrowserWindow} = require('electron');
-const authService = require('../services/auth-service');
-const createAppWindow = require('./app-process');
+const { BrowserWindow, session } = require("electron");
+const authService = require("../services/auth-service");
+const { createAppWindow, destroyAppWindow } = require("./app-process");
 
 let win = null;
 
@@ -12,28 +12,27 @@ function createAuthWindow() {
     height: 700,
     webPreferences: {
       nodeIntegration: false,
-      enableRemoteModule: false
-    }
+      enableRemoteModule: false,
+    },
   });
 
   win.loadURL(authService.getAuthenticationURL());
 
-  const {session: {webRequest}} = win.webContents;
+  const {
+    session: { webRequest },
+  } = win.webContents;
 
   const filter = {
-    urls: [
-      'http://localhost/callback*'
-    ]
+    urls: ["http://localhost/callback*"],
   };
 
-  webRequest.onBeforeRequest(filter, async ({url}) => {
+  webRequest.onBeforeRequest(filter, async ({ url }) => {
     await authService.loadTokens(url);
     createAppWindow();
     return destroyAuthWin();
   });
 
-
-  win.on('closed', () => {
+  win.on("closed", () => {
     win = null;
   });
 }
@@ -44,17 +43,11 @@ function destroyAuthWin() {
   win = null;
 }
 
-function createLogoutWindow() {
-  const logoutWindow = new BrowserWindow({
-    show: false,
-  });
-
-  logoutWindow.loadURL(authService.getLogOutUrl());
-
-  logoutWindow.on('ready-to-show', async () => {
-    logoutWindow.close();
+async function createLogoutWindow() {
     await authService.logout();
-  });
+    await session.defaultSession.clearStorageData();
+    destroyAppWindow();
+    createAuthWindow();
 }
 
 module.exports = {

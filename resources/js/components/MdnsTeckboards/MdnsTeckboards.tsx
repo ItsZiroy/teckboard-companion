@@ -74,7 +74,7 @@ export default function MdnsTeckboards() {
     setScreens([]);
     setQueried(false);
     let counter = 0;
-    let query = setInterval(() => {
+    const mdnsQuery = () => {
       mdns.query({
         questions: [
           {
@@ -88,7 +88,9 @@ export default function MdnsTeckboards() {
         setQueried(true);
       }
       counter++;
-    }, 2000);
+    };
+    mdnsQuery();
+    let query = setInterval(mdnsQuery, 2000);
   };
   const handleKeyDown = (e: KeyboardEvent) => {
     if ((e.key == "r" || e.key == "R") && e.ctrlKey) query();

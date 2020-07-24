@@ -1,6 +1,6 @@
 const { app, BrowserWindow } = require("electron");
 const { createAuthWindow } = require("./main/auth-process");
-const createAppWindow = require("./main/app-process");
+const { createAppWindow } = require("./main/app-process");
 const authService = require("./services/auth-service");
 // Behalten Sie eine globale Referenz auf das Fensterobjekt.
 // Wenn Sie dies nicht tun, wird das Fenster automatisch geschlossen,
@@ -14,7 +14,6 @@ async function showWindow() {
     win = 1;
     return createAppWindow();
   } catch (err) {
-    console.log(err);
     win = 1;
     createAuthWindow();
   }
@@ -29,6 +28,9 @@ app.on("ready", showWindow);
 app.on("window-all-closed", () => {
   // Unter macOS ist es üblich, für Apps und ihre Menu Bar
   // aktiv zu bleiben, bis der Nutzer explizit mit Cmd + Q die App beendet.
+  if(process.platform === "darwin") {
+    win = null;
+  }
   if (process.platform !== "darwin") {
     app.quit();
   }

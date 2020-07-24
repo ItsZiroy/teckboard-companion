@@ -4,12 +4,12 @@ import { Badge } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { User } from "../Auth";
 
-export interface AvatarProps {
+export interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {
   user: User;
   height: number;
   badgeHeight?: number;
   badgeWidth?: number;
-  onClick?(): any;
+  onClick?(event: React.MouseEvent<HTMLDivElement>): any;
 }
 
 export default function Avatar(props: AvatarProps) {
@@ -35,9 +35,9 @@ export default function Avatar(props: AvatarProps) {
     })
   );
   const classes = useStyles();
-  const { user } = props;
+  const { user, ...rest } = props;
   return (
-    <div style={{ height: props.height }}>
+    <div style={{ height: props.height }} {...rest}>
       <Badge
         variant="dot"
         overlap="circle"
