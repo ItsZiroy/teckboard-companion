@@ -11,7 +11,7 @@ import {
   Link,
 } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import Axios from "Axios";
+import Axios from "axios";
 import * as React from "react";
 import TbCard from "../TbCard";
 const useStyles = makeStyles((theme: Theme) =>
