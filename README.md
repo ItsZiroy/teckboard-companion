@@ -7,4 +7,5 @@ __The TECKboard will be released soon__
 If you want to learn more about what you can expect check out the official [TECKboard blog](https://medium.com/teckboard-blog) or regulary check on our website
 https://teckboard.de.
 <br></br>
-![TECKboard Companion](https://lh5.googleusercontent.com/4rUDk2YidNkjfDD-DUHoAMhSfxtYj3KTVRbBqG0K9Ug5If9S93P8khpJInfL_5mRQ1T6590hmoEAAmt1DtmF=w2880-h1674)
+![TECKboard Companion](https://i.ibb.co/GHWL8J6/Screenshot-2020-07-30-at-18-41-05.png)
+![TECKboard Companion 2](https://i.ibb.co/Bz0MXqR/Screenshot-2020-07-30-at-18-41-22.png)
