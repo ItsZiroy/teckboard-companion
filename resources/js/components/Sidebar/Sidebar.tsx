@@ -8,7 +8,10 @@ import {
   Theme,
 } from "@material-ui/core";
 import ImportantDevicesRoundedIcon from "@material-ui/icons/ImportantDevicesRounded";
+import SettingsRoundedIcon from "@material-ui/icons/SettingsRounded";
+import BuildRoundedIcon from "@material-ui/icons/BuildRounded";
 import { spacing } from "../../config.json";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -50,6 +53,16 @@ const useStyles = makeStyles((theme: Theme) =>
 export interface SidebarProps {}
 export default function Sidebar(props: SidebarProps) {
   const classes = useStyles();
+
+  const history = useHistory();
+
+  const [index, setIndex] = React.useState("home");
+
+  const handleChange = (e: React.ChangeEvent<{}>, value: string) => {
+    setIndex(value);
+    history.push(value);
+  };
+
   return (
     <Drawer
       variant="permanent"
@@ -64,13 +77,24 @@ export default function Sidebar(props: SidebarProps) {
       <Tabs
         TabIndicatorProps={{ style: { left: 0 } }}
         indicatorColor="primary"
-        value={"Home"}
+        value={index}
         orientation="vertical"
+        onChange={handleChange}
       >
         <Tab
-          value="Home"
+          value="home"
           className={classes.tab}
           icon={<ImportantDevicesRoundedIcon />}
+        ></Tab>
+        <Tab
+          value="setup"
+          className={classes.tab}
+          icon={<BuildRoundedIcon />}
+        ></Tab>
+        <Tab
+          value="settings"
+          className={classes.tab}
+          icon={<SettingsRoundedIcon />}
         ></Tab>
       </Tabs>
     </Drawer>

@@ -14,6 +14,7 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Axios from "axios";
 import * as React from "react";
 import TbCard from "../TbCard";
+import BoardSelect from "../BoardSelect";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
@@ -44,6 +45,9 @@ const useStyles = makeStyles((theme: Theme) =>
     modalContent: {
       display: "flex",
       justifyContent: "center",
+    },
+    boardSelect: {
+      minWidth: 250,
     },
   })
 );
@@ -179,18 +183,15 @@ export default function MdnsTeckboards() {
           </Typography>
         </DialogTitle>
         <DialogContent className={classes.modalContent}>
-          <TextField
-            value={modal.input}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          <BoardSelect
+            onChange={(e: React.ChangeEvent<{ value: string }>) => {
               setModal({
                 open: modal.open,
                 ip: modal.ip,
                 input: e.target.value,
               });
             }}
-            placeholder="Board"
-            color="secondary"
-            variant="outlined"
+            className={classes.boardSelect}
           />
         </DialogContent>
         <DialogActions>

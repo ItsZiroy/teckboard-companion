@@ -1,14 +1,11 @@
-import { Tab, Tabs } from "@material-ui/core";
-import Drawer from "@material-ui/core/Drawer";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import ImportantDevicesRoundedIcon from "@material-ui/icons/ImportantDevicesRounded";
 import * as React from "react";
+import { Route, Switch } from "react-router-dom";
 import { useAuth } from "../Auth";
-import MdnsTeckboards from "../MdnsTeckboards";
+import Home from "../Home";
 import Navbar from "../Navbar";
+import Setup from "../Setup";
 import Sidebar from "../Sidebar";
-import { spacing } from "../../config.json";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -16,6 +13,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     content: {
       marginTop: 60,
+      width: "100%",
     },
   })
 );
@@ -28,10 +26,15 @@ export default function Main(props: MainProps) {
       <Navbar />
       <Sidebar />
       <div className={classes.content}>
-        <Typography variant="h2" color="primary">
-          TECKscreens nearby:
-        </Typography>
-        <MdnsTeckboards />
+        <Switch>
+          <Route exact path="home">
+            <Home />
+          </Route>
+          <Route exact path="setup">
+            <Setup />
+          </Route>
+          <Route exact path="settings"></Route>
+        </Switch>
       </div>
     </div>
   );
