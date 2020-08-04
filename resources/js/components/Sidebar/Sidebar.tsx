@@ -56,7 +56,7 @@ export default function Sidebar(props: SidebarProps) {
 
   const history = useHistory();
 
-  const [index, setIndex] = React.useState("home");
+  const [index, setIndex] = React.useState("/home");
 
   const handleChange = (e: React.ChangeEvent<{}>, value: string) => {
     setIndex(value);
@@ -82,17 +82,17 @@ export default function Sidebar(props: SidebarProps) {
         onChange={handleChange}
       >
         <Tab
-          value="home"
+          value="/home"
           className={classes.tab}
           icon={<ImportantDevicesRoundedIcon />}
         ></Tab>
         <Tab
-          value="setup"
+          value="/setup"
           className={classes.tab}
           icon={<BuildRoundedIcon />}
         ></Tab>
         <Tab
-          value="settings"
+          value="/settings"
           className={classes.tab}
           icon={<SettingsRoundedIcon />}
         ></Tab>

@@ -2,7 +2,7 @@ import * as React from "react";
 import MuiAvatar from "@material-ui/core/Avatar";
 import { Badge } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import { User } from "../Auth";
+import { User } from "@teckboard-companion/core";
 
 export interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {
   user: User;

@@ -1,3 +1,3 @@
-import BoardsProvider, { BoardsContext, Board } from "./BoardsProvider";
+import BoardsProvider, { BoardsContext } from "./BoardsProvider";
 import useBoards from "./UseBoards";
-export { BoardsProvider as default, useBoards, BoardsContext, Board };
+export { BoardsProvider as default, useBoards, BoardsContext };

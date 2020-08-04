@@ -1,9 +1,8 @@
 import * as React from "react";
 import { AxiosResponse } from "axios";
-import { Icon } from "../Auth";
+import { Board } from "@teckboard-companion/core";
 const remote = window.require("electron").remote;
 const axios = remote.getGlobal("axios");
-
 export const BoardsContext = React.createContext<[Board]>([
   {
     id: "0",
@@ -18,16 +17,6 @@ export const BoardsContext = React.createContext<[Board]>([
 ]);
 export interface BoardsProviderProps {
   children: React.ReactChild;
-}
-export interface Board {
-  id: string;
-  name: string;
-  icon: Icon | null;
-  slug: string;
-  color_scheme: string;
-  company_id: string;
-  uri: string;
-  url: string;
 }
 export default function BoardsProvider(props: BoardsProviderProps) {
   var children = props.children;

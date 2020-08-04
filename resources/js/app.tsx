@@ -11,7 +11,7 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <AuthProvider>
         <BoardsProvider>
-          <MemoryRouter initialEntries={["home"]} initialIndex={0}>
+          <MemoryRouter initialEntries={["/home"]} initialIndex={0}>
             <Main />
           </MemoryRouter>
         </BoardsProvider>

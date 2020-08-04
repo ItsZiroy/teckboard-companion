@@ -6,6 +6,7 @@ import Home from "../Home";
 import Navbar from "../Navbar";
 import Setup from "../Setup";
 import Sidebar from "../Sidebar";
+import TbScreen from "../TbScreen";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -27,13 +28,14 @@ export default function Main(props: MainProps) {
       <Sidebar />
       <div className={classes.content}>
         <Switch>
-          <Route exact path="home">
+          <Route exact path="/home">
             <Home />
           </Route>
-          <Route exact path="setup">
+          <Route exact path="/setup">
             <Setup />
           </Route>
-          <Route exact path="settings"></Route>
+          <Route exact path="/settings"></Route>
+          <Route exact path="/screens/:id" children={<TbScreen />} />
         </Switch>
       </div>
     </div>

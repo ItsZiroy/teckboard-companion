@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useBoards, Board } from "../Boards";
+import { Board } from "@teckboard-companion/core";
 import {
   Select,
   MenuItem,
@@ -7,8 +7,12 @@ import {
   FormControl,
   InputLabel,
 } from "@material-ui/core";
+import { useBoards } from "@teckboard-companion/core/Boards";
 export interface BoardSelectProps extends SelectProps {
-  onChange(e: React.ChangeEvent<{ name?: string; value: string }>): void;
+  onChange(
+    e: React.ChangeEvent<{ name?: string; value: string }>,
+    board: Board
+  ): void;
 }
 export function BoardSelect(props: BoardSelectProps) {
   const { onChange, ...rest } = props;
@@ -22,8 +26,13 @@ export function BoardSelect(props: BoardSelectProps) {
         labelId={labelId}
         value={value}
         onChange={(e: React.ChangeEvent<{ name?: string; value: string }>) => {
-          setValue(e.target.value);
-          props.onChange(e);
+          if (!props.value) {
+            setValue(e.target.value);
+          }
+          props.onChange(
+            e,
+            boards[boards.findIndex((value) => value.id === e.target.value)]
+          );
         }}
         color="secondary"
         {...rest}

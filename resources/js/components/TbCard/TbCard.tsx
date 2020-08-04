@@ -3,10 +3,13 @@ import * as React from "react";
 import { Typography, Zoom, IconButton, Tooltip } from "@material-ui/core";
 import SpeakerPhoneIcon from "@material-ui/icons/SpeakerPhone";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
+import { Screen } from "@teckboard-companion/core";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
-      width: 200,
+      minWidth: 200,
+      maxWidth: 300,
       position: "relative",
       height: 100,
       background: "linear-gradient(80deg, #fb6340, #fbb140)",
@@ -14,6 +17,10 @@ const useStyles = makeStyles((theme: Theme) =>
       boxShadow: theme.shadows[5],
       marginLeft: theme.spacing(4),
       marginBottom: theme.spacing(4),
+      paddingLeft: theme.spacing(1.5),
+      paddingRight: theme.spacing(1.5),
+      paddingTop: theme.spacing(1),
+      paddingBottom: theme.spacing(1),
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
@@ -32,13 +39,13 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 export interface TbCardProps {
-  ip: string;
-  openModal(ip: string): void;
+  screen: Screen;
 }
 export default function TBCard(props: TbCardProps) {
-  const { ip, openModal } = props;
+  const { screen } = props;
+  const history = useHistory();
   const handlePing = (e: React.MouseEvent) => {
-    axios.post("http://" + ip + "/ping");
+    axios.post("http://" + screen.ip + "/ping");
     e.stopPropagation();
   };
   const classes = useStyles();
@@ -46,13 +53,13 @@ export default function TBCard(props: TbCardProps) {
     <Zoom in>
       <div
         onClick={() => {
-          openModal(ip);
+          history.push("screens/" + screen.ip, screen);
         }}
         className={classes.container}
       >
         <div className={classes.content}>
           <Typography variant="h6">
-            <b>{ip}</b>
+            <b>{screen.name}</b>
           </Typography>
         </div>
         <Tooltip title="Identify" placement="left">

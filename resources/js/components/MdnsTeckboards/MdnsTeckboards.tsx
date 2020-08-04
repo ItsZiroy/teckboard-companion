@@ -6,15 +6,15 @@ import {
   DialogContent,
   DialogTitle,
   Fab,
-  TextField,
-  Typography,
   Link,
+  Typography,
 } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { Screen } from "@teckboard-companion/core";
+import BoardSelect from "@teckboard-companion/core/BoardSelect";
+import TbCard from "@teckboard-companion/core/TbCard";
 import Axios from "axios";
 import * as React from "react";
-import TbCard from "../TbCard";
-import BoardSelect from "../BoardSelect";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 export default function MdnsTeckboards() {
   const classes = useStyles();
-  const [screens, setScreens] = React.useState([]);
+  const [screens, setScreens] = React.useState<[Screen?]>([]);
   const [queried, setQueried] = React.useState(false);
   const [modal, setModal] = React.useState({
     open: false,
@@ -106,7 +106,7 @@ export default function MdnsTeckboards() {
     document.addEventListener("keypress", handleKeyDown);
 
     mdns.on("response", (response: any) => {
-      let teckscreens = [...screens];
+      let teckscreens = [...screens] as [Screen];
       response.answers.forEach((answer: any, index: number) => {
         if (
           answer.name == "teckboard.local" &&
@@ -114,14 +114,21 @@ export default function MdnsTeckboards() {
             answer.data
           )
         ) {
-          teckscreens.push(answer.data);
+          Axios.get("http://" + answer.data + "/info")
+            .then((response) => {
+              let name = response.data.name;
+              teckscreens.push({ name: name ?? "TECKscreen", ip: answer.data });
+
+              teckscreens = _.union(teckscreens);
+
+              if (teckscreens.length && !_.isEqual(teckscreens, screens))
+                setScreens(teckscreens);
+            })
+            .catch((e) => {
+              console.log(e);
+            });
         }
       });
-
-      teckscreens = _.union(teckscreens);
-
-      if (teckscreens.length && !_.isEqual(teckscreens, screens))
-        setScreens(teckscreens);
     });
     query();
     return () => {
@@ -131,8 +138,8 @@ export default function MdnsTeckboards() {
   return (
     <>
       <div className={classes.container}>
-        {screens.map((value: string, index: number) => {
-          return <TbCard key={index} openModal={handleOpenModal} ip={value} />;
+        {screens.map((value: Screen, index: number) => {
+          return <TbCard key={index} screen={value} />;
         })}
         {!screens.length ? (
           !queried ? (

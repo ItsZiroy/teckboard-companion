@@ -1,9 +1,10 @@
 import * as React from "react";
 import { AxiosResponse } from "axios";
+import { User } from "@teckboard-companion/core";
 const remote = window.require("electron").remote;
 const axios = remote.getGlobal("axios");
 
-export const AuthContext = React.createContext({
+export const AuthContext = React.createContext<User>({
   id: "0",
   firstname: "First",
   name: "Last",
@@ -17,26 +18,9 @@ export const AuthContext = React.createContext({
 export interface AuthProviderProps {
   children: React.ReactChild;
 }
-export interface User {
-  id: string;
-  firstname: string;
-  name: string;
-  email: string;
-  icon: Icon;
-  status: number;
-  settings: {
-    language?: string;
-  };
-}
-export interface Icon {
-  id: string;
-  name: string;
-  location: string;
-  type: string;
-}
 export default function AuthProvider(props: AuthProviderProps) {
   var children = props.children;
-  const [user, setUser] = React.useState({
+  const [user, setUser] = React.useState<User>({
     id: "0",
     firstname: "First",
     name: "Last",
