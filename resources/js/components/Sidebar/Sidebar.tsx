@@ -1,17 +1,17 @@
-import * as React from "react";
 import {
-  Drawer,
-  Tab,
-  makeStyles,
-  Tabs,
   createStyles,
+  Drawer,
+  makeStyles,
+  Tab,
+  Tabs,
   Theme,
 } from "@material-ui/core";
+import BuildRoundedIcon from "@material-ui/icons/BuildRounded";
 import ImportantDevicesRoundedIcon from "@material-ui/icons/ImportantDevicesRounded";
 import SettingsRoundedIcon from "@material-ui/icons/SettingsRounded";
-import BuildRoundedIcon from "@material-ui/icons/BuildRounded";
+import * as React from "react";
+import { useHistory, useLocation } from "react-router-dom";
 import { spacing } from "../../config.json";
-import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -53,13 +53,10 @@ const useStyles = makeStyles((theme: Theme) =>
 export interface SidebarProps {}
 export default function Sidebar(props: SidebarProps) {
   const classes = useStyles();
-
   const history = useHistory();
-
-  const [index, setIndex] = React.useState("/home");
+  const location = useLocation();
 
   const handleChange = (e: React.ChangeEvent<{}>, value: string) => {
-    setIndex(value);
     history.push(value);
   };
 
@@ -77,7 +74,7 @@ export default function Sidebar(props: SidebarProps) {
       <Tabs
         TabIndicatorProps={{ style: { left: 0 } }}
         indicatorColor="primary"
-        value={index}
+        value={location.pathname}
         orientation="vertical"
         onChange={handleChange}
       >

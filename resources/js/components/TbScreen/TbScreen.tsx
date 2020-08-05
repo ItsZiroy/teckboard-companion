@@ -11,7 +11,7 @@ import { Screen } from "@teckboard-companion/types";
 import Axios from "axios";
 import * as React from "react";
 import { useLocation, useParams } from "react-router-dom";
-
+import { useScreenToken } from "../ScreenToken";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -58,14 +58,15 @@ export default function TbScreen() {
     url: "",
   });
   const classes = useStyles();
+  const screenToken = useScreenToken();
   const handleChange = (
     e: React.ChangeEvent<{ name?: string; value: string }>,
     board: Board
-  ): void => {
+  ) => {
     Axios.post("http://" + screen.ip, {
-      accessToken: "12345678",
+      accessToken: screenToken.token,
       boardId: e.target.value,
-    });
+    }).then((response) => console.log(response));
     setBoard(board);
   };
 

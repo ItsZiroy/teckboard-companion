@@ -1,6 +1,7 @@
 const { BrowserWindow, session } = require("electron");
 const authService = require("../services/auth-service");
 const { createAppWindow, destroyAppWindow } = require("./app-process");
+const screenService = require("../services/screen-service");
 
 let win = null;
 
@@ -45,6 +46,7 @@ function destroyAuthWin() {
 
 async function createLogoutWindow() {
     await authService.logout();
+    await screenService.logout();
     await session.defaultSession.clearStorageData();
     destroyAppWindow();
     createAuthWindow();

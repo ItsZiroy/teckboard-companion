@@ -1,6 +1,6 @@
+import { Typography } from "@material-ui/core";
 import * as React from "react";
 import MdnsTeckboards from "../MdnsTeckboards";
-import { Typography } from "@material-ui/core";
 
 export default function Home() {
   return (

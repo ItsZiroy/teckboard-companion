@@ -5,6 +5,7 @@ import SpeakerPhoneIcon from "@material-ui/icons/SpeakerPhone";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { Screen } from "@teckboard-companion/core";
+import { useScreenToken } from "../ScreenToken";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
@@ -49,11 +50,16 @@ export default function TBCard(props: TbCardProps) {
     e.stopPropagation();
   };
   const classes = useStyles();
+  const token = useScreenToken();
   return (
     <Zoom in>
       <div
         onClick={() => {
-          history.push("screens/" + screen.ip, screen);
+          if (token.token) {
+            history.push("/screens/" + screen.ip, screen);
+          } else {
+            history.push("/setup");
+          }
         }}
         className={classes.container}
       >

@@ -1,14 +1,10 @@
+import { createStyles, makeStyles, Theme } from "@material-ui/core";
 import * as React from "react";
-import {
-  Stepper,
-  Step,
-  StepLabel,
-  makeStyles,
-  createStyles,
-  Theme,
-  StepIcon,
-} from "@material-ui/core";
-import AddIcon from "@material-ui/icons/Add";
+import { useScreenToken } from "../ScreenToken";
+import Complete from "./Complete";
+import Incomplete from "./Incomplete";
+const remote = window.require("electron").remote;
+const screenProcess = remote.require("./main/screenAuth-process.js");
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -20,21 +16,15 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 export default function Setup() {
-  const [step, setStep] = React.useState(0);
+  const token = useScreenToken();
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <Stepper activeStep={step}>
-        <Step key={0}>
-          <StepLabel>Log in at TECKscreen</StepLabel>
-        </Step>
-        <Step key={1}>
-          <StepLabel>Authorize TECKscreen</StepLabel>
-        </Step>
-        <Step key={2}>
-          <StepLabel>Add TECKscreen to your Board</StepLabel>
-        </Step>
-      </Stepper>
+      {token.token ? (
+        <Complete refresh={token.refresh} />
+      ) : (
+        <Incomplete refresh={token.refresh} />
+      )}
     </div>
   );
 }

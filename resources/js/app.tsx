@@ -6,14 +6,17 @@ import theme from "./theme";
 import AuthProvider from "./components/Auth";
 import BoardsProvider from "./components/Boards";
 import { MemoryRouter } from "react-router-dom";
+import ScreenTokenProvider from "@teckboard-companion/core/ScreenToken";
 export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <AuthProvider>
         <BoardsProvider>
-          <MemoryRouter initialEntries={["/home"]} initialIndex={0}>
-            <Main />
-          </MemoryRouter>
+          <ScreenTokenProvider>
+            <MemoryRouter initialEntries={["/home"]} initialIndex={0}>
+              <Main />
+            </MemoryRouter>
+          </ScreenTokenProvider>
         </BoardsProvider>
       </AuthProvider>
     </ThemeProvider>
