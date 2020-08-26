@@ -10,11 +10,12 @@ import {
   Typography,
 } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import { Screen } from "@teckboard-companion/core";
 import BoardSelect from "@teckboard-companion/core/BoardSelect";
 import TbCard from "@teckboard-companion/core/TbCard";
 import Axios from "axios";
 import * as React from "react";
+import { Screen } from "@teckboard-companion/core";
+import * as _ from "lodash";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
@@ -53,15 +54,20 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 export default function MdnsTeckboards() {
   const classes = useStyles();
-  const [screens, setScreens] = React.useState<[Screen?]>([]);
+  const [screens, _setScreens] = React.useState<Screen[]>([]);
   const [queried, setQueried] = React.useState(false);
+  const screensRef = React.useRef(screens);
+  const setScreens = (data: Screen[]) => {
+    screensRef.current = data;
+    _setScreens(data);
+  };
   const [modal, setModal] = React.useState({
     open: false,
     ip: null,
     input: "",
   });
-  let mdns = window.require("multicast-dns")();
-
+  let bonjour = window.require("bonjour")();
+  let browser = bonjour.find({ type: "http" });
   const handleOpenModal = (ip: string) => {
     setModal({ ip: ip, open: true, input: "" });
   };
@@ -75,27 +81,41 @@ export default function MdnsTeckboards() {
     });
   };
   const query = () => {
+    browser.update();
     setScreens([]);
-    setQueried(false);
-    let counter = 0;
-    const mdnsQuery = () => {
-      mdns.query({
-        questions: [
-          {
-            name: "teckboard.local",
-            type: "A",
-          },
-        ],
-      });
-      if (counter == 3) {
-        clearInterval(query);
-        setQueried(true);
-      }
-      counter++;
-    };
-    mdnsQuery();
-    let query = setInterval(mdnsQuery, 2000);
+    servicesToScreens();
   };
+  const servicesToScreens = () => {
+    let teckscreens: Screen[] = [...screensRef.current];
+    browser.services.forEach((service: any, index: number) => {
+      if (
+        service.name.split("-")[0] == "TECKscreen" &&
+        /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/gm.test(
+          service.addresses[0]
+        )
+      ) {
+        if (
+          !teckscreens[index] ||
+          !_.isEqual(teckscreens[index].ip, service.addresses[0])
+        ) {
+          Axios.get("http://" + service.addresses[0] + "/info")
+            .then((response) => {
+              let name = response.data.name;
+              teckscreens.push({
+                name: name ?? "TECKscreen",
+                ip: service.addresses[0],
+              });
+              teckscreens = _.union(teckscreens);
+              setScreens(teckscreens);
+            })
+            .catch((e) => {
+              console.log(e);
+            });
+        }
+      }
+    });
+  };
+
   const handleKeyDown = (e: KeyboardEvent) => {
     if ((e.key == "r" || e.key == "R") && e.ctrlKey) query();
   };
@@ -104,33 +124,29 @@ export default function MdnsTeckboards() {
     const _ = require("loadsh");
 
     document.addEventListener("keypress", handleKeyDown);
-
-    mdns.on("response", (response: any) => {
-      let teckscreens = [...screens] as [Screen];
-      response.answers.forEach((answer: any, index: number) => {
-        if (
-          answer.name == "teckboard.local" &&
-          /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/gm.test(
-            answer.data
-          )
-        ) {
-          Axios.get("http://" + answer.data + "/info")
-            .then((response) => {
-              let name = response.data.name;
-              teckscreens.push({ name: name ?? "TECKscreen", ip: answer.data });
-
-              teckscreens = _.union(teckscreens);
-
-              if (teckscreens.length && !_.isEqual(teckscreens, screens))
-                setScreens(teckscreens);
-            })
-            .catch((e) => {
-              console.log(e);
+    browser.on("up", (service: any) => {
+      let teckscreens: Screen[] = [...screensRef.current];
+      if (
+        service.name.split("-")[0] == "TECKscreen" &&
+        /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/gm.test(
+          service.addresses[0]
+        )
+      ) {
+        Axios.get("http://" + service.addresses[0] + "/info")
+          .then((response) => {
+            let name = response.data.name;
+            teckscreens.push({
+              name: name ?? "TECKscreen",
+              ip: service.addresses[0],
             });
-        }
-      });
+            teckscreens = _.union(teckscreens);
+            setScreens(teckscreens);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      }
     });
-    query();
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
@@ -138,9 +154,11 @@ export default function MdnsTeckboards() {
   return (
     <>
       <div className={classes.container}>
-        {screens.map((value: Screen, index: number) => {
-          return <TbCard key={index} screen={value} />;
-        })}
+        {screens
+          .sort((s: Screen, t: Screen) => s.name.localeCompare(t.name))
+          .map((value: Screen, index: number) => {
+            return <TbCard key={index} screen={value} />;
+          })}
         {!screens.length ? (
           !queried ? (
             <div className={classes.loading}>

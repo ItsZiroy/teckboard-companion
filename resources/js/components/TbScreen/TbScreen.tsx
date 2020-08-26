@@ -5,13 +5,12 @@ import {
   Theme,
   Typography,
 } from "@material-ui/core";
-import { Board } from "@teckboard-companion/core";
 import BoardSelect from "@teckboard-companion/core/BoardSelect";
-import { Screen } from "@teckboard-companion/types";
 import Axios from "axios";
 import * as React from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { useScreenToken } from "../ScreenToken";
+import { Screen, Board } from "@teckboard-companion/core";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
