@@ -1,6 +1,7 @@
 import * as React from "react";
-import { AxiosResponse } from "axios";
-import { Board } from "@teckboard-companion/core";
+import {AxiosResponse} from "axios";
+import {Board} from "@teckboard-companion/core";
+
 const remote = window.require("electron").remote;
 const axios = remote.getGlobal("axios");
 export const BoardsContext = React.createContext<[Board]>([
@@ -34,7 +35,7 @@ export default function BoardsProvider(props: BoardsProviderProps) {
   ]);
   React.useEffect(() => {
     axios
-      .get("https://dev.teckboard.de/api/v1" + "/user/boards")
+        .get("https://teckboard.de/api/v1" + "/user/boards")
       .then((response: AxiosResponse) => {
         setBoards(response.data.data);
       });

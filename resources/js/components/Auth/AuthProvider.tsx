@@ -1,6 +1,7 @@
 import * as React from "react";
-import { AxiosResponse } from "axios";
-import { User } from "@teckboard-companion/core";
+import {AxiosResponse} from "axios";
+import {User} from "@teckboard-companion/core";
+
 const remote = window.require("electron").remote;
 const axios = remote.getGlobal("axios");
 
@@ -19,7 +20,7 @@ export interface AuthProviderProps {
   children: React.ReactChild;
 }
 export default function AuthProvider(props: AuthProviderProps) {
-  var children = props.children;
+  const children = props.children;
   const [user, setUser] = React.useState<User>({
     id: "0",
     firstname: "First",
@@ -33,7 +34,7 @@ export default function AuthProvider(props: AuthProviderProps) {
   });
   React.useEffect(() => {
     axios
-      .get("https://dev.teckboard.de/api/v1" + "/user")
+        .get("https://teckboard.de/api/v1" + "/user")
       .then((response: AxiosResponse) => {
         let {
           id,

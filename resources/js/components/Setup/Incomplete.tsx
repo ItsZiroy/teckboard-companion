@@ -1,14 +1,7 @@
-import {
-  Button,
-  createStyles,
-  makeStyles,
-  Step,
-  Stepper,
-  Theme,
-  Typography,
-} from "@material-ui/core";
+import {Button, createStyles, makeStyles, Step, Stepper, Theme, Typography,} from "@material-ui/core";
 import * as React from "react";
 import CustomStepContainer from "../CustomStepContainer";
+
 const remote = window.require("electron").remote;
 const screenProcess = remote.require("./main/screenAuth-process.js");
 const useStyles = makeStyles((theme: Theme) =>
