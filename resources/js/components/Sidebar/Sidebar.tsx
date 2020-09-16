@@ -57,7 +57,7 @@ export default function Sidebar(props: SidebarProps) {
   const location = useLocation();
 
   const handleChange = (e: React.ChangeEvent<{}>, value: string) => {
-    history.push(value);
+    history.push("/" + value);
   };
 
   return (
@@ -74,22 +74,22 @@ export default function Sidebar(props: SidebarProps) {
       <Tabs
         TabIndicatorProps={{ style: { left: 0 } }}
         indicatorColor="primary"
-        value={location.pathname}
+        value={location.pathname.split("/")[1]}
         orientation="vertical"
         onChange={handleChange}
       >
         <Tab
-          value="/home"
+          value="home"
           className={classes.tab}
           icon={<ImportantDevicesRoundedIcon />}
         ></Tab>
         <Tab
-          value="/setup"
+          value="setup"
           className={classes.tab}
           icon={<BuildRoundedIcon />}
         ></Tab>
         <Tab
-          value="/settings"
+          value="settings"
           className={classes.tab}
           icon={<SettingsRoundedIcon />}
         ></Tab>

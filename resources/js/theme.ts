@@ -10,6 +10,7 @@ export const Spacing = {
 export const Gradients = {
   primary: "linear-gradient(87deg, #172b4d 0, #1a174d 100%)",
   secondary: "linear-gradient(87deg, #fb6340, #fbb140)",
+  success: "linear-gradient(87deg, #2dce89 0, #2dcecc 100%)"
 };
 export default createMuiTheme({
   overrides: {

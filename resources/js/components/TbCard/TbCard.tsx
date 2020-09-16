@@ -56,7 +56,7 @@ export default function TBCard(props: TbCardProps) {
       <div
         onClick={() => {
           if (token.token) {
-            history.push("/screens/" + screen.ip, screen);
+            history.push("/home/screens/" + screen.ip, screen);
           } else {
             history.push("/setup");
           }
