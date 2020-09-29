@@ -70,6 +70,7 @@ export default function MdnsTeckboards() {
               color="secondary"
               variant="body1"
               onClick={() => network.refresh()}
+              style={{ cursor: "pointer" }}
             >
               Refresh
             </Link>

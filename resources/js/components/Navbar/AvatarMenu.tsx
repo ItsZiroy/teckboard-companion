@@ -61,7 +61,7 @@ export default function AvatarMenu(props: AvatarMenuProps) {
             <Avatar height={40} user={user}></Avatar>
           </ListItemAvatar>
           <ListItemText
-            primary={user.firstname + user.name}
+            primary={user.firstname + " " + user.name}
             secondary={user.email}
           ></ListItemText>
         </ListItem>

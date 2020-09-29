@@ -14,9 +14,7 @@ export const NetworkContext = React.createContext<NetworkContextProps>({
 
 export interface NetworkContextProps {
   screens: Screen[];
-
   refresh(hardRefresh?: boolean): void;
-
   updateScreens(screens: Screen[]): Screen[];
 }
 
@@ -25,26 +23,29 @@ export interface AuthProviderProps {
 }
 
 export default function Network(props: AuthProviderProps) {
-  const children = props.children;
   const [browser, setBrowser] = React.useState<Browser>(null);
   const [screens, _setScreens] = React.useState<Screen[]>([]);
   const screensRef = React.useRef(screens);
   const setScreens = (data: Screen[]) => {
-    screensRef.current = data;
+    screensRef.current = [...data];
     _setScreens(data);
   };
+
   const handleRefresh = (hard = false) => {
     if (hard) {
       setScreens([]);
+      browser.stop();
       setBrowser(bonjour.find({ type: "http" }, handleServiceFound));
     } else {
       browser.update();
     }
   };
+
   const updateScreens = (screens: Screen[]) => {
     setScreens([...screens]);
     return screens;
   };
+
   const handleServiceFound = (service: any) => {
     let teckscreens: Screen[] = screensRef.current;
     if (
@@ -53,13 +54,17 @@ export default function Network(props: AuthProviderProps) {
         service.addresses[0]
       )
     ) {
-      if (!teckscreens.find((value) => value.ip == service.addresses[0])) {
+      let teckscreen = teckscreens.find(
+        (value) => value.ip == service.addresses[0]
+      );
+      if (!teckscreen) {
         Axios.get("http://" + service.addresses[0] + "/info")
           .then((response: AxiosResponse) => {
             let name = response.data.name;
             teckscreens.push({
               name: name ?? "TECKscreen",
               ip: service.addresses[0],
+              restarting: false,
             });
             teckscreens = _.union(teckscreens);
             setScreens(teckscreens);
@@ -67,12 +72,19 @@ export default function Network(props: AuthProviderProps) {
           .catch((e) => {
             console.log(e);
           });
+      } else if (teckscreen.restarting) {
+        teckscreen.restarting = false;
+        screens[screens.indexOf(teckscreen)] = teckscreen;
+        setScreens(screens);
+        return teckscreen;
       }
     }
   };
+
   React.useEffect(() => {
     setBrowser(bonjour.find({ type: "http" }, handleServiceFound));
   }, []);
+
   return React.createElement(
     NetworkContext.Provider,
     {
@@ -82,6 +94,6 @@ export default function Network(props: AuthProviderProps) {
         updateScreens: updateScreens,
       },
     },
-    children
+    props.children
   );
 }

@@ -5,20 +5,23 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Fab,
   IconButton,
   Link,
   makeStyles,
   TextField,
   Theme,
+  Tooltip,
   Typography,
 } from "@material-ui/core";
+import { RotateLeftRounded } from "@material-ui/icons";
 import EditRoundedIcon from "@material-ui/icons/EditRounded";
 import { Board } from "@teckboard-companion/core";
 import BoardSelect from "@teckboard-companion/core/BoardSelect";
 import Axios from "axios";
 import { isEmpty } from "lodash";
 import * as React from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { Gradients } from "../../theme";
 import useScreen from "../Network/UseScreen";
 import { useScreenToken } from "../ScreenToken";
@@ -100,9 +103,12 @@ export default function TbScreen() {
 
   const classes = useStyles();
   const screenToken = useScreenToken();
+  const history = useHistory();
 
   const handleSave = () => {
-    screen.update(name);
+    screen.update(name).then(() => {
+      setOpen(false);
+    });
   };
   const toggleOpen = () => {
     setOpen(open ? false : true);
@@ -125,6 +131,13 @@ export default function TbScreen() {
     });
   };
 
+  const handleRestart = () => {
+    Axios.post("http://" + screen.ip + "/restart").then(() => {
+      screen.setRestarting(true);
+      history.push("/home");
+    });
+  };
+
   React.useEffect(() => {
     Axios.get("http://" + screen.ip + "/board").then((response) => {
       setBoard(!isEmpty(response.data) ? response.data : null);
@@ -139,6 +152,15 @@ export default function TbScreen() {
         <IconButton color="primary" onClick={toggleOpen}>
           <EditRoundedIcon fontSize="large" />
         </IconButton>
+        <Tooltip title="Restart">
+          <Fab
+            style={{ marginLeft: "auto", marginRight: 5 }}
+            color="primary"
+            onClick={handleRestart}
+          >
+            <RotateLeftRounded fontSize="large" />
+          </Fab>
+        </Tooltip>
       </div>
       <div className={classes.container}>
         <Typography style={{ marginRight: 10 }} variant="h6">

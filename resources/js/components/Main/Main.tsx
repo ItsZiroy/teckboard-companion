@@ -8,7 +8,7 @@ import Sidebar from "../Sidebar";
 import TbScreen from "../TbScreen";
 import Network from "../Network/Network";
 import { spacing } from "../../config.json";
-
+import { Settings } from "../Settings";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -39,7 +39,9 @@ export default function Main(props: MainProps) {
             <Route exact path="/setup">
               <Setup />
             </Route>
-            <Route exact path="/settings" />
+            <Route exact path="/settings">
+              <Settings />
+            </Route>
           </Switch>
         </Network>
       </div>

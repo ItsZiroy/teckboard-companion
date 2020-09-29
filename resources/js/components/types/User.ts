@@ -1,3 +1,4 @@
+import { Channel } from "laravel-echo/dist/channel";
 import Icon from "./Icon";
 export default interface User {
     id: string;
@@ -5,6 +6,7 @@ export default interface User {
     name: string;
     email: string;
     icon: Icon;
+    channel: Channel;
     status: number;
     settings: {
         language?: string;
