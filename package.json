@@ -258,7 +258,7 @@
     "history": "^4.7.2",
     "laravel-echo": "^1.8.1",
     "loadsh": "0.0.4",
-    "moment": "^2.29.1",
+    "moment": "^2.29.2",
     "moment-timezone": "^0.5.31",
     "react": "^16.13.1",
     "react-dom": "^16.12.0",
