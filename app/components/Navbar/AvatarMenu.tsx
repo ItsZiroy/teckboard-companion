@@ -31,7 +31,7 @@ export default function AvatarMenu() {
   const classes = useStyles();
 
   const logout = () => {
-    const { remote } = window.require("electron");
+    const remote = window.require("@electron/remote");
     const mainProcess = remote.require("./main.prod.js");
     mainProcess.createLogoutWindow();
   };

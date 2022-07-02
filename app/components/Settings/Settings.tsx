@@ -2,7 +2,7 @@ import { Typography } from "@material-ui/core";
 import * as React from "react";
 import { useVersion } from "../Version";
 
-const { remote } = window.require("electron");
+const remote = window.require("@electron/remote");
 
 export default function Settings() {
   const version = useVersion();

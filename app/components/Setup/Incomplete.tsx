@@ -10,7 +10,7 @@ import {
 import * as React from "react";
 import CustomStepContainer from "../CustomStepContainer";
 
-const { remote } = window.require("electron");
+const remote = window.require("@electron/remote");
 const { screenAuth } = remote.require("./main.prod.js");
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

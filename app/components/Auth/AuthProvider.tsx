@@ -4,7 +4,7 @@ import { Channel } from "laravel-echo/dist/channel";
 import { useEcho } from "../Network";
 import { User } from "../types";
 
-const { remote } = window.require("electron");
+const remote = window.require("@electron/remote");
 const axios = remote.getGlobal("axios");
 
 export const AuthContext = React.createContext<User>({

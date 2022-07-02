@@ -18,6 +18,8 @@ import authService from "./services/auth-service";
 import screenService from "./services/screen-service";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import screenAuth from "./screen-auth";
+import * as remoteMain from "@electron/remote/main";
+remoteMain.initialize();
 
 export { screenService, authService, screenAuth };
 export default class AppUpdater {
@@ -72,8 +74,12 @@ export const createAppWindow = async () => {
     icon: getAssetPath("icon.png"),
     webPreferences: {
       nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
     },
   });
+
+  require("@electron/remote/main").enable(mainWindow.webContents);
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);
 

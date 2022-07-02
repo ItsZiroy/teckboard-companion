@@ -1,7 +1,7 @@
 {
   "name": "teckboard-companion",
   "productName": "TECKboard Companion",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "A complementary project for the TECKboards enabling TECKscreen discovery via MDNS in a beautiful desktop environment.",
   "main": "./main.prod.js",
   "author": {
@@ -16,7 +16,8 @@
   "dependencies": {
     "keytar": "^6.0.1",
     "electron-store": "^6.0.0",
-    "bonjour": "^3.5.0"
+    "bonjour": "^3.5.0",
+    "@electron/remote": "^2.0.8"
   },
   "types": "./components/types/index.d.ts",
   "typings": "./components/types/index.d.ts"

@@ -5,7 +5,7 @@ import * as React from "react";
 import NetworkScreen from "../types/NetworkScreen";
 import { useScreenToken } from "../ScreenToken";
 
-const { remote } = window.require("electron");
+const remote = window.require("@electron/remote");
 const Bonjour = remote.require("bonjour");
 const bonjour = new Bonjour();
 export const NetworkContext = React.createContext<NetworkContextProps>({

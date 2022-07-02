@@ -1,6 +1,6 @@
 import * as React from "react";
 
-const { remote } = window.require("electron");
+const remote = window.require("@electron/remote");
 const { screenService } = remote.require("./main.prod.js");
 
 export const ScreenTokenContext = React.createContext<{

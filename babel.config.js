@@ -42,7 +42,7 @@ module.exports = (api) => {
         { loose: false },
       ],
       require("@babel/plugin-proposal-do-expressions"),
-
+      [require("@babel/plugin-proposal-private-methods"), { loose: true }],
       // Stage 2
       [require("@babel/plugin-proposal-decorators"), { legacy: true }],
       require("@babel/plugin-proposal-function-sent"),

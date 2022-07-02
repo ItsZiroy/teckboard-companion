@@ -2,7 +2,7 @@ import * as React from "react";
 import Echo from "laravel-echo";
 import * as io from "socket.io-client";
 
-const { remote } = window.require("electron");
+const remote = window.require("@electron/remote");
 const { authService } = remote.require("./main.prod.js");
 const echo = new Echo({
   broadcaster: "socket.io",

@@ -2,7 +2,7 @@ import * as React from "react";
 import { AxiosResponse } from "axios";
 import { Board } from "../types";
 
-const { remote } = window.require("electron");
+const remote = window.require("@electron/remote");
 const axios = remote.getGlobal("axios");
 export const BoardsContext = React.createContext<[Board]>([
   {

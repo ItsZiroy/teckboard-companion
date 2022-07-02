@@ -8,7 +8,7 @@ import {
 import * as React from "react";
 import { useHistory } from "react-router-dom";
 
-const { remote } = window.require("electron");
+const remote = window.require("@electron/remote");
 const { screenService } = remote.require("./main.prod.js");
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

@@ -5,7 +5,7 @@ import { useEcho } from "../Network";
 import { version as packageVersion } from "../../package.json";
 import Version from "../types/Version";
 
-const { remote } = window.require("electron");
+const remote = window.require("@electron/remote");
 const axios = remote.getGlobal("axios");
 
 export const VersionContext = React.createContext<VersionProvider>({
