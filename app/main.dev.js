@@ -11,24 +11,40 @@
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 import path from "path";
-import { app, BrowserWindow, session } from "electron";
-import { autoUpdater } from "electron-updater";
-import log from "electron-log";
+import { app, BrowserWindow, session, autoUpdater, dialog } from "electron";
+import * as remoteMain from "@electron/remote/main";
 import authService from "./services/auth-service";
 import screenService from "./services/screen-service";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import screenAuth from "./screen-auth";
-import * as remoteMain from "@electron/remote/main";
+import env from "./env.json";
+
 remoteMain.initialize();
 
 export { screenService, authService, screenAuth };
-export default class AppUpdater {
-  constructor() {
-    log.transports.file.level = "info";
-    autoUpdater.logger = log;
-    autoUpdater.checkForUpdatesAndNotify();
-  }
-}
+const url = `${env.updateServer}/update?platform=${
+  process.platform
+}?version=${app.getVersion()}`;
+
+autoUpdater.setFeedURL({ url });
+autoUpdater.on("update-downloaded", (event, releaseNotes, releaseName) => {
+  const dialogOpts = {
+    type: "info",
+    buttons: ["Restart", "Later"],
+    title: "Application Update",
+    message: process.platform === "win32" ? releaseNotes : releaseName,
+    detail:
+      "A new version has been downloaded. Restart the application to apply the updates.",
+  };
+
+  dialog.showMessageBox(dialogOpts).then((returnValue) => {
+    if (returnValue.response === 0) autoUpdater.quitAndInstall();
+  });
+});
+autoUpdater.on("error", (message) => {
+  console.error("There was a problem updating the application");
+  console.error(message);
+});
 
 let mainWindow = null;
 
@@ -100,10 +116,6 @@ export const createAppWindow = async () => {
   mainWindow.on("closed", () => {
     mainWindow = null;
   });
-
-  // Remove this if your app does not use auto updates
-  // eslint-disable-next-line
-  new AppUpdater();
 };
 export function destroyAppWindow() {
   if (mainWindow) mainWindow.close();

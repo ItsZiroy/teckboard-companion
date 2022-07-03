@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 
 <html>
-
   <head>
-
     <meta charset="utf-8" />
 
     <title>TECKboard Companion</title>
@@ -12,15 +10,12 @@
       href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,800;1,400&display=swap"
       rel="stylesheet"
     />
-
   </head>
 
   <body>
-
     <div id="root"></div>
 
     <script>
-      console.log(process);
       if (typeof process === "object") {
         const scripts = [];
 
@@ -36,7 +31,6 @@
         } else {
           scripts.push("./dist/renderer.prod.js");
         }
-        console.log(scripts.length);
         if (scripts.length) {
           document.write(
             scripts
@@ -46,8 +40,5 @@
         }
       }
     </script>
-
   </body>
-
 </html>
-
