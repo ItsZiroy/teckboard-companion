@@ -24,9 +24,7 @@ remoteMain.initialize();
 
 export { screenService, authService, screenAuth };
 const platform = `${os.platform()}_${os.arch()}`;
-const version = app.getVersion();
-const url = `${env.updateServer}/update/${platform}/${version}`;
-
+const url = `${env.updateServer}/update/${platform}/${app.getVersion()}`;
 autoUpdater.setFeedURL({ url });
 autoUpdater.on("update-downloaded", (event, releaseNotes, releaseName) => {
   const dialogOpts = {
@@ -46,6 +44,7 @@ autoUpdater.on("error", (message) => {
   console.error("There was a problem updating the application");
   console.error(message);
 });
+autoUpdater.checkForUpdates();
 setInterval(() => {
   autoUpdater.checkForUpdates();
 }, 60000);

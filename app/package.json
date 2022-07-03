@@ -1,7 +1,7 @@
 {
   "name": "teckboard-companion",
   "productName": "TECKboard Companion",
-  "version": "0.9.4",
+  "version": "0.9.5",
   "description": "A complementary project for the TECKboards enabling TECKscreen discovery via MDNS in a beautiful desktop environment.",
   "main": "./main.prod.js",
   "author": {
