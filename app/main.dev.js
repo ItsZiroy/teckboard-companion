@@ -11,6 +11,7 @@
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 import path from "path";
+import * as os from "os";
 import { app, BrowserWindow, session, autoUpdater, dialog } from "electron";
 import * as remoteMain from "@electron/remote/main";
 import authService from "./services/auth-service";
@@ -22,9 +23,9 @@ import env from "./env.json";
 remoteMain.initialize();
 
 export { screenService, authService, screenAuth };
-const url = `${env.updateServer}/update?platform=${
-  process.platform
-}?version=${app.getVersion()}`;
+const platform = `${os.platform()}_${os.arch()}`;
+const version = app.getVersion();
+const url = `${env.updateServer}/update/${platform}/${version}`;
 
 autoUpdater.setFeedURL({ url });
 autoUpdater.on("update-downloaded", (event, releaseNotes, releaseName) => {
@@ -45,6 +46,9 @@ autoUpdater.on("error", (message) => {
   console.error("There was a problem updating the application");
   console.error(message);
 });
+setInterval(() => {
+  autoUpdater.checkForUpdates();
+}, 60000);
 
 let mainWindow = null;
 
