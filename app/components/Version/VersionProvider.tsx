@@ -62,7 +62,7 @@ export default function VersionProvider(props: VersionProviderProps) {
 
   React.useEffect(() => {
     axios
-      .get("https://teckboard.de/api/v1/version")
+      .get("https://teckboard.teckdigital.de/api/v1/version")
       .then((response: AxiosResponse) => {
         version.teckboard = response.data;
         setVersion(version);

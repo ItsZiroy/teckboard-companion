@@ -1,7 +1,7 @@
 {
   "name": "teckboard-companion",
   "productName": "TECKboard Companion",
-  "version": "0.9.5",
+  "version": "0.10.0",
   "license": "UNLICENSED",
   "description": "A complementary project for the TECKboards enabling TECKscreen discovery via MDNS in a beautiful desktop environment.",
   "scripts": {
@@ -52,7 +52,6 @@
       "entitlementsInherit": "build/entitlements.mac.plist",
       "gatekeeperAssess": false
     },
-    "afterSign": "build/notarize.js",
     "dmg": {
       "contents": [
         {
@@ -213,7 +212,6 @@
     "jest": "^26.1.0",
     "lint-staged": "^10.2.11",
     "mini-css-extract-plugin": "^0.9.0",
-    "node-sass": "^7.0",
     "opencollective-postinstall": "^2.0.3",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "prettier": "^2.0.5",
@@ -253,11 +251,13 @@
     "loadsh": "0.0.4",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.31",
+    "pusher-js": "7.0.3",
     "react": "^16.13.1",
     "react-dom": "^16.12.0",
     "react-hot-loader": "^4.12.21",
     "react-router-dom": "^5.2.0",
     "regenerator-runtime": "^0.13.5",
+    "sass": "^1.85.1",
     "socket.io-client": "^2.3.0",
     "source-map-support": "^0.5.19"
   },

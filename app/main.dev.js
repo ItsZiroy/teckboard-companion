@@ -136,6 +136,7 @@ const createWindow = async () => {
     await authService.refreshTokens();
     createAppWindow();
   } catch (err) {
+    console.log("Authenticating");
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
     createAuthWindow();
   }

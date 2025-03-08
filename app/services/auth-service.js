@@ -40,7 +40,6 @@ function getAuthenticationURL() {
 
 async function refreshTokens() {
   const token = await keytar.getPassword(keytarService, keytarAccount);
-
   if (token) {
     const refreshOptions = {
       method: "POST",
@@ -70,6 +69,7 @@ async function refreshTokens() {
 }
 
 async function loadTokens(callbackURL) {
+  console.log("loading token");
   const urlParts = url.parse(callbackURL, true);
   const { query } = urlParts;
 
@@ -99,8 +99,8 @@ async function loadTokens(callbackURL) {
       await keytar.setPassword(keytarService, keytarAccount, refreshToken);
     }
   } catch (error) {
+    console.log(error);
     await logout();
-
     throw error;
   }
 }

@@ -35,7 +35,7 @@ export default function BoardsProvider(props: BoardsProviderProps) {
   ]);
   React.useEffect(() => {
     axios
-      .get("https://teckboard.de/api/v1/user/boards")
+      .get("https://teckboard.teckdigital.de/api/v1/user/boards")
       .then((response: AxiosResponse) => {
         setBoards(response.data.data);
       });

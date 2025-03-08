@@ -66,17 +66,10 @@ export default function AuthProvider(props: AuthProviderProps) {
 
   React.useEffect(() => {
     axios
-      .get("https://teckboard.de/api/v1/user")
+      .get("https://teckboard.teckdigital.de/api/v1/user")
       .then((response: AxiosResponse) => {
-        const {
-          id,
-          firstname,
-          name,
-          email,
-          icon,
-          settings,
-          status,
-        } = response.data.data;
+        const { id, firstname, name, email, icon, settings, status } =
+          response.data.data;
         setUser({
           id,
           firstname,
